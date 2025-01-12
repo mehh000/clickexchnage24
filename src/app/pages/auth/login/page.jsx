@@ -21,7 +21,7 @@ function Login() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Don't have an account?{' '}
-            <Link href="/auth/registration" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/pages/auth/registration" className="font-medium text-blue-600 hover:text-blue-500">
               Register here
             </Link>
           </p>
