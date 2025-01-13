@@ -22,10 +22,11 @@ const ReserveTable = () => {
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-10 w-10 relative">
-                    <Image
+                  <Image
                       src={currency.image}
                       alt={currency.name}
-                      fill
+                      width={40} // Specify width
+                      height={40} // Specify height
                       className="rounded-full"
                     />
                   </div>

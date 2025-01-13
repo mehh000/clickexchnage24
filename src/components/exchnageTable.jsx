@@ -26,7 +26,8 @@ const ExchangeTable = () => {
                     <Image
                       src={currency.image}
                       alt={currency.name}
-                      fill
+                      width={40} // Specify width
+                      height={40} // Specify height
                       className="rounded-full"
                     />
                   </div>
