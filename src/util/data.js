@@ -3,8 +3,8 @@ const currencyData = [
     {
         name: 'bKash',
         image: '/bk.webp',
-        buyingRate: '100',
-        sellingRate: '100',
+        buyingRate: '1',
+        sellingRate: '1',
         id: 1,
         currency: '100 DBT',
         reserve: '400,000',
@@ -13,8 +13,8 @@ const currencyData = [
     {
         name: 'Nagad',
         image: '/nagad.webp',
-        buyingRate: '100',
-        sellingRate: '100',
+        buyingRate: '1',
+        sellingRate: '1',
         id: 2,
         currency: '100 BDT',
         reserve: '400,000',
@@ -23,8 +23,8 @@ const currencyData = [
     {
         name: 'Rocket',
         image: '/rocket.png',
-        buyingRate: '100',
-        sellingRate: '100',
+        buyingRate: '1',
+        sellingRate: '1',
         id: 3,
         currency: '100 BDT',
         money: 'BDT',
