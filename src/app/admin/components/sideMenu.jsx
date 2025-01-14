@@ -13,7 +13,7 @@ function SideMenu() {
         { name: 'Exchange History', href: '/admin/dashboard/exchange-history' },
         { name: 'Messages', href: '/admin/dashboard/messages' },
         { name: 'Users', href: '/admin/dashboard/users' },
-        { name: 'Feedbacks', href: '/admin//dashboardfeedbacks' },
+        { name: 'Feedbacks', href: '/admin//dashboard/feedbacks' },
         { name: 'Affiliate', href: '/admin/dashboard/affiliate' },
         { name: 'Contact', href: '/admin/dashboard/contact' },
         { name: 'Advice', href: '/admin//dashboardadvice' },

@@ -10,7 +10,7 @@ function AdminLayout({ children }) {
 
     const handleToggle = () => {
         setIsToggle(!isToggle);
-        console.log(isToggle);s
+        console.log(isToggle);
     };
 
     return (
