@@ -10,9 +10,14 @@ import TableComponents from "@/components/TableComponents";
 import TotalRecord from "@/components/totalRecord";
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
+import Footer from '@/components/footer';
 
 export default function Home() {
   return (
+    <>
+    <Navber />
+    
+
     <div className="bg-gray-50 min-h-screen relative">
       <Message />
       <ExchangeBoard />
@@ -30,6 +35,8 @@ export default function Home() {
           <MessageCircle className="w-6 h-6" />
         </Link>
       </div>
-    </div>
+    </div>  
+    <Footer />
+      </>
   );
 }
