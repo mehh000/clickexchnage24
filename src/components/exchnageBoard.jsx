@@ -12,7 +12,8 @@ function ExchangeBoard() {
     const [senderData, setSenderData] = useState({});
     const [receiverData, setReceiverData] = useState({});
     const [sendAmount, setSendAmount] = useState('')
-    const [receiveAmount, setReceiveAmount] = useState(0)
+    const [receiveAmount, setReceiveAmount] = useState(0);
+    const [rate, setRate] = useState()
 
 
 
@@ -28,44 +29,42 @@ function ExchangeBoard() {
         ...currencyData,
     ];
 
-    
-           
+
+
+
+
+
     useEffect(() => {
-
-
         try {
-            //  get the send and recive data
-            const parsedSenderData = JSON.parse(sendMethod);
-            const parsedReceiverData = JSON.parse(receiveMethod);
-    
-            // setSenderData(parsedSenderData);
-            // setReceiverData(parsedReceiverData);
-    
-            console.log('Receiver data:', parsedSenderData);
-            console.log('Sender data:', parsedReceiverData);
-            console.log('Send amount:', sendAmount)
+            // Parse send and receive methods only once
+            const parsedSenderData = sendMethod ? JSON.parse(sendMethod) : null;
+            const parsedReceiverData = receiveMethod ? JSON.parse(receiveMethod) : null;
 
-            //  compare with our selling data and buying data
-            const ourBuyingRate_BDT = JSON.parse(sendMethod).buyingRate;
-            const UserGetFromOurBuying = sendAmount* ourBuyingRate_BDT
-            console.log('User get when we buy before sending', UserGetFromOurBuying);
+            if (parsedSenderData && parsedReceiverData) {
+                setSenderData(parsedSenderData);
+                setReceiverData(parsedReceiverData);
 
-            // how much user is getting
+                // Calculate rate
+                const rRate = parsedSenderData.buyingRate / parsedReceiverData.sellingRate;
+                setRate(parseFloat(rRate.toFixed(2)));
 
-            const requestedCurrency_sellingRate= JSON.parse(receiveMethod).sellingRate;
-             //         const formattedReceiveData = parseFloat(user_receive_amount.toFixed(2)); // Limit to 2 decimal places
-            const user_receive_amount = UserGetFromOurBuying / requestedCurrency_sellingRate;
-            setReceiveAmount(parseFloat(user_receive_amount.toFixed(2)));
+                console.log('Sender data:', parsedSenderData.currency);
 
+                // Calculate the user's amount when we buy before sending
+                const ourBuyingRate_BDT = parsedSenderData.buyingRate;
+                const userGetFromOurBuying = sendAmount * ourBuyingRate_BDT;
+                console.log('User gets when we buy before sending:', userGetFromOurBuying);
 
-
-
+                // Calculate how much the user is receiving
+                const requestedCurrencySellingRate = parsedReceiverData.sellingRate;
+                const userReceiveAmount = userGetFromOurBuying / requestedCurrencySellingRate;
+                setReceiveAmount(parseFloat(userReceiveAmount.toFixed(2)));
+            }
         } catch (error) {
-            console.log(error)
+            console.log('Error:', error);
         }
+    }, [sendMethod, receiveMethod, sendAmount]);
 
-
-    }, [receiveMethod, sendAmount, sendMethod]);
 
     return (
         <div className="relative w-full">
@@ -146,7 +145,13 @@ function ExchangeBoard() {
                                         placeholder="Enter amount"
                                         readOnly
                                     />
-                                    <p className="text-gray-500">Recive: {receiveAmount} </p>
+                                    <p className="text-gray-500 text-sm">
+                                        Exchange rate : {senderData.money === 'USD' ? senderData.currency : receiverData.sellingRate} = {senderData.money === 'USD' ? rate : receiverData.currency}
+
+                                        {/* {senderData.currency ? senderData.currency : ''} {receiverData.sellingRate ? receiverData.sellingRate : ''} =
+                                        {receiverData.sellingRate ? receiverData.sellingRate / receiverData.sellingRate : ''} {receiverData.currency ? receiverData.currency : ''}  */}
+
+                                    </p>
                                 </div>
                             </div>
                         </div>
