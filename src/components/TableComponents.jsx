@@ -8,8 +8,8 @@ import ExchangeTracking from './ExchnageTracking'
 
 function TableComponents() {
     return (
-        <div className=" flex items-center justify-center flex-wrap gap-5">
-            <ReserveTable />
+        <div className=" flex mt-4 items-center justify-center flex-wrap gap-5">
+          
             <ExchangeTable />
             <ExchangeTracking />
         </div>

@@ -1,15 +1,21 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback, memo, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Menu, X, CircleUser } from 'lucide-react';
 import { userContext } from '@/context/userContext';
+import { getAuth, signOut } from "firebase/auth";
+import { useRouter } from 'next/navigation';
+
 
 const Navber = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isBlinking, setIsBlinking] = useState(true);
   const [isUserIconActive, setIsUserIconActive] = useState(false);
+  const router = useRouter();
+  const { user } = useContext(userContext);
+
 
   // Toggle Menu
   const toggleMenu = useCallback(() => {
@@ -29,8 +35,19 @@ const Navber = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const Authenticate = 'false';
+  const auth = getAuth(); // Get the Firebase Auth instance
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    
+      router.push('/')
+      // Redirect or handle post-logout actions here
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
+  };
+  
 
   return (
     <nav className="w-full bg-orange-400 shadow-md">
@@ -44,9 +61,8 @@ const Navber = () => {
               <span className="text-red-500">24</span>
             </Link>
             <div
-              className={`h-4 w-4 rounded-full ${
-                isBlinking ? 'bg-green-500' : 'bg-gray-300'
-              } transition-colors duration-500`}
+              className={`h-4 w-4 rounded-full ${isBlinking ? 'bg-green-500' : 'bg-gray-300'
+                } transition-colors duration-500`}
             ></div>
           </div>
 
@@ -78,7 +94,7 @@ const Navber = () => {
 
           {/* Login Button */}
           <div className="hidden md:block">
-            {Authenticate === 'true' ? (
+            {user == null ? (
               <Link href={'/pages/auth/login'}>
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
                   Login
@@ -114,9 +130,8 @@ const Navber = () => {
 
         {/* Side Drawer Menu */}
         <div
-          className={`fixed inset-y-0 right-0 w-64 z-20 bg-orange-400 transform ${
-            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          } transition-transform duration-300 ease-in-out md:hidden`}
+          className={`fixed inset-y-0 right-0 w-64 z-20 bg-orange-400 transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            } transition-transform duration-300 ease-in-out md:hidden`}
         >
           <div className="p-4">
             <button onClick={toggleMenu} className="mb-4 text-white">
@@ -139,11 +154,32 @@ const Navber = () => {
                 Advice
               </Link>
               <Link href={'/pages/auth/login'}>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full">
-                  {Authenticate === 'true' ? 'Logout' : 'Login'}
-                </button>
+
+                {user == null && <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full">Login </button>}
+
               </Link>
+
+              {
+                user != null && (<div className="flex flex-col space-y-4">
+                  <Link href="/pages/advice" className="text-white hover:text-gray-200">
+
+                    Profile
+                  </Link>
+                  <Link href="/pages/advice" className="text-white hover:text-gray-200">
+
+                    Settings
+                  </Link>
+                  <Link href="/pages/advice" className="text-white hover:text-gray-200">
+
+                    My Exchange
+                  </Link>
+                  <button onClick={handleLogout} className="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full flex justify-center">
+                    Logout
+                  </button>
+                </div>)
+              }
             </div>
+
           </div>
         </div>
       </div>

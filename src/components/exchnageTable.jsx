@@ -1,24 +1,43 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import currencyData from '@/util/data'
+import { getAllCurrencyData } from '@/service/getCurrency'
 
 const ExchangeTable = () => {
+
+  const [reserveData, setReserveData] = useState([]);
+
+  useEffect(() => {
+      const getReserveData = async () => {
+          try {
+              const data = await getAllCurrencyData();
+              console.log('Fetched currency data:', data);
+              setReserveData(data);
+          } catch (error) {
+              console.log('Error fetching data:', error);
+          }
+      };
+
+      getReserveData();
+  }, []);
 
 
   return (
     <div className=" overflow-x-auto">
       <table className="min-w-full bg-white rounded-xl shadow-lg">
         <thead>
-          <tr className="bg-gray-100 border-b">
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Currency</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Buying</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Selling</th>
+          <tr className="bg-orange-400 border-b">
+            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Currency</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Buying</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Selling</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Reserve</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {currencyData.map((currency, index) => (
+         {
+          reserveData ?  (reserveData.map((currency, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
@@ -37,13 +56,17 @@ const ExchangeTable = () => {
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {currency.buyingRate}
+                {currency.buyingrate}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {currency.sellingRate}
+                {currency.sellingrate}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {currency.reserve}
               </td>
             </tr>
-          ))}
+          ))) : 'loading'
+         }
         </tbody>
       </table>
     </div>
