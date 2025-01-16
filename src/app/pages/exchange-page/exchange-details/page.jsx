@@ -11,9 +11,9 @@ export default function ExchangeDetails() {
    const router = useRouter();
 
     // Define states for form fields
-    const [name, setName] = useState(user.fullName || "");
-    const [email, setEmail] = useState(user.email || "");
-    const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || "");
+    const [name, setName] = useState(user?.fullName || "");
+    const [email, setEmail] = useState(user?.email || "");
+    const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || "");
     const [address, setAddress] = useState("");
 
     const [exchangeId, setExchangeId] = useState("");
