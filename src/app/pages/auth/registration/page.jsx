@@ -1,19 +1,67 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React, { useState } from 'react';
+import { auth, db } from '@/DB/firebase_config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 function Registration() {
-  const [fullName, setFullName] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [referralCode, setReferralCode] = useState('')
+  const [fullName, setFullName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [referralCode, setReferralCode] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle registration logic here
-  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    const generateReferralId = () => {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let referralId = '';
+      for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        referralId += characters[randomIndex];
+      }
+      return referralId;
+    };
+
+    try {
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Store user data in Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        fullName,
+        phoneNumber,
+        email,
+        referralCode: referralCode || null, // Store referralCode or null if empty
+        uid: user.uid,
+        roll: 'user',
+        roll: 'user',
+        refferalEarn: 0,
+        refferId: generateReferralId(), // Assign a unique 6-character referral ID
+        refferList: [], // Empty array for referral list
+        exchnageList: [], // Empty array for exchange list
+        createdAt: new Date().toISOString(),
+      });
+      router.push('/')
+
+      console.log('User registered successfully!');
+    } catch (err) {
+      console.error('Error during registration:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -30,6 +78,7 @@ function Registration() {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="full-name" className="sr-only">
@@ -112,15 +161,17 @@ function Registration() {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={loading}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white ${loading ? 'bg-gray-500' : 'bg-blue-600 hover:bg-blue-700'
+                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
             >
-              Create Account
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Registration
+export default Registration;

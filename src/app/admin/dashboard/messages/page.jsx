@@ -1,13 +1,31 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EditIcon, TrashIcon, PlusCircleIcon } from 'lucide-react';
+import { getMessage } from '../../service/getMessage';
 
 export default function Message() {
   const [messages, setMessages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [editingMessageIndex, setEditingMessageIndex] = useState(null);
+  const [adminMessage, setAdminMessage] = useState()
+
+  //get the message from db
+  useEffect(() => {
+    const getMessagesFromDB = async () => {
+      try {
+        const response = await getMessage();
+        setAdminMessage(response[0])
+      //  console.log('Messages fetched:', response[0]);
+      
+      } catch (error) {
+      //  console.error('Error fetching messages:', error); // Log any errors that occur
+      }
+    };
+
+    getMessagesFromDB();
+  }, []);
 
   const handleAddMessage = () => {
     if (newMessage.trim()) {
@@ -36,49 +54,39 @@ export default function Message() {
 
   return (
     <div className="p-4">
-      {messages.length === 0 ? (
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-500"
-        >
-          <PlusCircleIcon size={20} />
-          Add Message
-        </button>
-      ) : (
+    
+       
+     
         <div>
           <div className="space-y-4">
-            {messages.map((message, index) => (
+          
               <div
-                key={index}
+             
                 className="flex items-center justify-between bg-gray-100 p-4 rounded shadow"
               >
-                <span className="text-gray-700">{message}</span>
+                <span className="text-gray-700">
+                  {adminMessage != null ? adminMessage.adminMessage : 'No messages yet'}
+                </span>
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => handleEditMessage(index)}
+                 //   onClick={() => handleEditMessage(index)}
                     className="text-blue-600 hover:text-blue-500"
                   >
                     <EditIcon size={18} />
                   </button>
                   <button
-                    onClick={() => handleDeleteMessage(index)}
+                   // onClick={() => handleDeleteMessage(index)}
                     className="text-red-600 hover:text-red-500"
                   >
                     <TrashIcon size={18} />
                   </button>
                 </div>
               </div>
-            ))}
+          
           </div>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="mt-4 flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-500"
-          >
-            <PlusCircleIcon size={20} />
-            Add Another Message
-          </button>
+
         </div>
-      )}
+     
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

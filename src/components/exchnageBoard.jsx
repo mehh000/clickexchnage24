@@ -48,12 +48,12 @@ function ExchangeBoard() {
                 const rRate = parsedSenderData.buyingRate / parsedReceiverData.sellingRate;
                 setRate(parseFloat(rRate.toFixed(2)));
 
-                console.log('Sender data:', parsedSenderData.currency);
+              //  console.log('Sender data:', parsedSenderData.currency);
 
                 // Calculate the user's amount when we buy before sending
                 const ourBuyingRate_BDT = parsedSenderData.buyingRate;
                 const userGetFromOurBuying = sendAmount * ourBuyingRate_BDT;
-                console.log('User gets when we buy before sending:', userGetFromOurBuying);
+              //  console.log('User gets when we buy before sending:', userGetFromOurBuying);
 
                 // Calculate how much the user is receiving
                 const requestedCurrencySellingRate = parsedReceiverData.sellingRate;
@@ -61,7 +61,7 @@ function ExchangeBoard() {
                 setReceiveAmount(parseFloat(userReceiveAmount.toFixed(2)));
             }
         } catch (error) {
-            console.log('Error:', error);
+           // console.log('Error:', error);
         }
     }, [sendMethod, receiveMethod, sendAmount]);
 

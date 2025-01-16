@@ -1,22 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EditIcon, TrashIcon, PlusCircleIcon } from 'lucide-react';
-
-// Fake User Data
-const fakeUsers = Array.from({ length: 10 }, (_, i) => ({
-  id: i + 1,
-  name: `User ${i + 1}`,
-  email: `user${i + 1}@example.com`,
-  phone: `+123456789${i}`,
-  totalExchange: Math.floor(Math.random() * 1000),
-  totalRefer: Math.floor(Math.random() * 100),
-  referEarn: `$${(Math.random() * 100).toFixed(2)}`,
-}));
+import { getAllUsers } from '../../service/getAllUser';
 
 const Users = () => {
-  const [users, setUsers] = useState(fakeUsers);
+  const [users, setUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const getAllUsersData = async () => {
+      try {
+        const data = await getAllUsers();
+        setUsers(data); // Directly set the users data
+        console.log('all users data:', data); // Log the fetched data
+      } catch (error) {
+        console.log('failed to get users because:', error);
+      }
+    };
+    getAllUsersData();
+  }, []);
 
   const handleAddUser = () => {
     setIsModalOpen(true);
@@ -43,20 +46,20 @@ const Users = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-xl shadow-lg">
           <thead>
-            <tr className="bg-gray-100 border-b">
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Name</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Email</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Phone</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Total Exchange</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Total Refer</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Refer Earn</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500 uppercase">Actions</th>
+            <tr className="bg-orange-400 border-b">
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Name</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Email</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Phone</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Total Exchange</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Total Refer</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Refer Earn</th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-white uppercase">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
             {users.map((user) => (
               <tr key={user.id}>
-                <td className="px-4 py-3 text-sm text-gray-700">{user.name}</td>
+                <td className="px-4 py-3 text-sm text-gray-700">{user.fullName}</td>
                 <td className="px-4 py-3 text-sm text-gray-700">{user.email}</td>
                 <td className="px-4 py-3 text-sm text-gray-700">{user.phone}</td>
                 <td className="px-4 py-3 text-sm text-gray-700">{user.totalExchange}</td>

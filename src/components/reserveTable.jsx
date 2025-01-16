@@ -1,11 +1,26 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import currencyData from '@/util/data'
+import { getAllCurrencyData } from '@/service/getCurrency'
 
 const ReserveTable = () => {
 
+  const [reserveData, setReserveData] = useState([]);
+
+  useEffect(() => {
+    const getReserveData = async () => {
+      try {
+        const data = await getAllCurrencyData();
+     //   console.log('from reserve table', data);
+        setReserveData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getReserveData();
+  }, [])
 
   return (
     <div className="overflow-x-auto mt-5">
@@ -17,12 +32,12 @@ const ReserveTable = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {currencyData.map((currency, index) => (
+          {reserveData.length > 0 ? reserveData.map((currency, index) => (
             <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-10 w-10 relative">
-                  <Image
+                    <Image
                       src={currency.image}
                       alt={currency.name}
                       width={40} // Specify width
@@ -39,7 +54,11 @@ const ReserveTable = () => {
                 {currency.reserve}
               </td>
             </tr>
-          ))}
+          )) : (
+            <tr>
+              <td colSpan="2" className="px-6 py-4 text-center text-gray-500">No data available</td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

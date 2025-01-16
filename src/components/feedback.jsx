@@ -6,6 +6,7 @@ import { Star, ChevronLeft, ChevronRight, User } from 'lucide-react'
 const Feedback = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
 
+
   // Sample feedback data
   const feedbacks = [
     {
