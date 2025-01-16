@@ -1,7 +1,14 @@
+'use client'
+
+
+import { userContext } from "@/context/userContext";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
+
 
 export default function FInalCheak() {
+    const { exchangeData } = useContext(userContext)
+    console.log('from the final cheak page', exchangeData)
     return (
         <div className="w-full bg-gray-100  pt-5 pb-5 flex items-center justify-center">
             <div className="p-6 rounded-lg shadow-lg max-w-3xl w-full bg-white flex flex-col gap-6">
@@ -31,41 +38,52 @@ export default function FInalCheak() {
 
                 {/* Exchange Info */}
                 <div className="flex flex-row gap-5 items-center text-center">
-                    <div className="text-lg font-semibold">Bkash: 1200</div>
+                    <div className="text-lg font-semibold"> {exchangeData != null ? exchangeData.SendMethod : 'loading'} : {exchangeData != null ? exchangeData.sendAmount : 'loading'} </div>
                     <p className="text-gray-500 my-2">to</p>
-                    <div className="text-lg font-semibold">Webmoney: 11 USD</div>
+                    <div className="text-lg font-semibold">{exchangeData != null ? exchangeData.ReciveMethod : 'loading'} : {exchangeData != null ? exchangeData.receiveAmount : 'loading'} </div>
                 </div>
 
                 {/* User Details */}
                 <div className="flex flex-col gap-4">
-                    <div className="flex flex-col">
+                    <div className="flex flex-row item-center gap-3">
                         <label htmlFor="name" className="text-sm font-medium text-gray-700">
                             Your Name
                         </label>
-                        <h1 className="">Himal hasan</h1>
+                        <h1 className="">
+                            {exchangeData.name != null ? exchangeData.name : 'loading'}
+                        </h1>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-row item-center gap-3">
                         <label htmlFor="email" className="text-sm font-medium text-gray-700">
                             Your Email
                         </label>
-                        <h1 className="">mdhimal@gmail.com</h1>
+                        <h1 className="">
+                            {exchangeData.email != null ? exchangeData.email : 'loading'}
+
+                        </h1>
 
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-row item-center gap-3">
                         <label htmlFor="phone" className="text-sm font-medium text-gray-700">
                             Your Phone
                         </label>
-                        <h1 className="">019992134234</h1>
+                        <h1 className="">
+                            {exchangeData.phoneNumber != null ? exchangeData.phoneNumber : 'loading'}
+
+                        </h1>
 
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-row item-center gap-3">
                         <label
                             htmlFor="address"
                             className="text-sm font-medium text-gray-700"
                         >
-                            Your Webmoney Address
+                            Your {exchangeData != null ? exchangeData.ReciveMethod : 'loading'}  Address
                         </label>
-                        <h1 className="">U784534</h1>
+                        <h1 className="">
+                            {exchangeData.address != null ? exchangeData.address : 'loading'}
+
+                        </h1>
 
                     </div>
                 </div>

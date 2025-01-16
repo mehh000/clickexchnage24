@@ -16,6 +16,7 @@ export const userContext = createContext();
 export const UserProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
+    const [exchangeData, setExchnage] = useState({});
 
 
     // get the user with uid
@@ -47,7 +48,7 @@ export const UserProvider = ({ children }) => {
 
     //   now return the fucntion and state to the children
     return (
-        <userContext.Provider value={{ user, setUser }}>
+        <userContext.Provider value={{ user, setUser,exchangeData, setExchnage }}>
             {children}
         </userContext.Provider>
     )

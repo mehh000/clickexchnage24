@@ -40,8 +40,7 @@ const Navber = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-    
-      router.push('/')
+      router.push('/pages/auth/login')
       // Redirect or handle post-logout actions here
     } catch (error) {
       console.error("Error logging out:", error.message);
@@ -120,9 +119,9 @@ const Navber = () => {
                 <Link href="/my-exchange" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   My Exchange
                 </Link>
-                <Link href="/logout" className="block px-4 py-2 text-red-600 hover:bg-red-100">
+                <button onClick={handleLogout} className="block px-4 py-2 text-red-600 hover:bg-red-100">
                   Logout
-                </Link>
+                </button>
               </div>
             )}
           </div>

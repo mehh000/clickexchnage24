@@ -1,27 +1,41 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ArrowLeftRight, ArrowDown } from 'lucide-react'
 import currencyData from '@/util/data'
 import Image from 'next/image'
 import Link from 'next/link'
+import { userContext } from '@/context/userContext'
 
 function ExchangeBoard() {
     const [sendMethod, setSendMethod] = useState({});
-
+    const { user, exchangeData, setExchnage } = useContext(userContext)
     const [receiveMethod, setReceiveMethod] = useState({})
     const [senderData, setSenderData] = useState({});
     const [receiverData, setReceiverData] = useState({});
     const [sendAmount, setSendAmount] = useState('')
     const [receiveAmount, setReceiveAmount] = useState(0);
-    const [rate, setRate] = useState()
+    const [rate, setRate] = useState();
+
 
 
 
     const handleExchange = (e) => {
-        e.preventDefault();
+       
 
-    }
+        const SendMethod = senderData.name;
+        const ReciveMethod = receiverData.name
+        setExchnage((prevExchangeData) => ({
+            ...prevExchangeData, 
+            SendMethod,
+            ReciveMethod,
+            sendAmount,
+            receiveAmount,
+        }));
+
+        console.log('exchange data', exchangeData);
+
+    };
     const currencyUpdatedData = [
         {
             name: 'select one',
@@ -112,7 +126,11 @@ function ExchangeBoard() {
                                         placeholder="Enter amount"
                                         required
                                     />
-                                    <p className="text-gray-400">Reserve: 20000tk</p>
+                                    <p className="text-gray-400">
+                                        {
+                                            senderData != null ? senderData.reserve : 0
+                                        }
+                                    </p>
                                 </div>
                             </div>
 
@@ -148,21 +166,33 @@ function ExchangeBoard() {
                                     />
                                     <p className="text-gray-500 text-sm">
                                         Exchange rate : {senderData.money === 'USD' ? senderData.currency : receiverData.sellingRate} = {senderData.money === 'USD' ? rate : receiverData.currency}
-
-                                        {/* {senderData.currency ? senderData.currency : ''} {receiverData.sellingRate ? receiverData.sellingRate : ''} =
-                                        {receiverData.sellingRate ? receiverData.sellingRate / receiverData.sellingRate : ''} {receiverData.currency ? receiverData.currency : ''}  */}
-
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <Link href={'/pages/exchange-page/exchange-details'} >
-                            <button
-                                type="submit"
-                                className="w-full mt-6 bg-orange-400 text-white py-3 px-6 rounded-lg hover:bg-orange-500 transition-colors font-medium"
-                            >
-                                Exchange Now
-                            </button></Link>
+                        <Link href={'/pages/exchange-page/exchange-details'}>
+                        
+                        </Link>
+
+                        {
+                            user != null ? 
+                            <Link href={'/pages/exchange-page/exchange-details'} >
+                                <button
+                                    type="submit"
+                                    onClick={handleExchange}
+                                    className="w-full mt-6 bg-orange-400 text-white py-3 px-6 rounded-lg hover:bg-orange-500 transition-colors font-medium"
+                                >
+                                    Exchange Now
+                                </button>
+                                </Link> : <button
+                                    type="submit"
+                              
+                                    className="w-full mt-6 bg-red-200 text-white py-3 px-6 rounded-lg  transition-colors font-medium"
+                                >
+                                login to exchange
+                            </button>
+                        }
+
                     </form>
                 </div>
             </div>

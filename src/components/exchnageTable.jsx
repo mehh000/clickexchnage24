@@ -13,7 +13,7 @@ const ExchangeTable = () => {
       const getReserveData = async () => {
           try {
               const data = await getAllCurrencyData();
-              console.log('Fetched currency data:', data);
+             // console.log('Fetched currency data:', data);
               setReserveData(data);
           } catch (error) {
               console.log('Error fetching data:', error);

@@ -1,17 +1,29 @@
 'use client'
 
-import React, { useState } from 'react'
+import { getExchnageAll } from '@/service/addExchangeData';
+import React, { useEffect, useState } from 'react'
 
 const LatestExchangeTable = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 5;
+  const [data, setData] = useState();
+
+  // get the exchnage data
+  useEffect(() => {
+    const getExchnages = async () => {
+      const data = await getExchnageAll();
+      console.log('getting all exchess:', data);
+      setData(data);
+    };
+    getExchnages()
+  }, [])
 
   // Sample data - replace with actual data
   const exchanges = [
     {
       userName: "John Doe",
       time: "2024-01-20 14:30",
-      orderId: "ORD001", 
+      orderId: "ORD001",
       exchange: {
         send: "bKash 1000 BDT",
         receive: "Nagad 950 BDT"
@@ -41,7 +53,7 @@ const LatestExchangeTable = () => {
   ]
 
   const getStatusColor = (status) => {
-    switch(status.toLowerCase()) {
+    switch (status.toLowerCase()) {
       case 'pending':
         return 'bg-yellow-100 text-yellow-800'
       case 'processing':
@@ -76,32 +88,34 @@ const LatestExchangeTable = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
-            {currentItems.map((exchange, index) => (
+          {
+            data != null ? <tbody className="divide-y divide-gray-200">
+            {data.map((exchange, index) => (
               <tr key={index} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {exchange.userName}
+                  {exchange.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {exchange.time}
+                2024-01-20 14:20
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {exchange.orderId}
+                {exchange.exchangeId}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500">
                   <div className="flex flex-col">
-                    <span>Send: {exchange.exchange.send}</span>
-                    <span>Receive: {exchange.exchange.receive}</span>
+                    <span>Send: bkash</span>
+                    <span>Receive: pm</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(exchange.status)}`}>
-                    {exchange.status}
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full }`}>
+                  {exchange.status}
                   </span>
                 </td>
               </tr>
             ))}
-          </tbody>
+          </tbody> : <tbody></tbody>
+          }
         </table>
       </div>
 
@@ -118,11 +132,10 @@ const LatestExchangeTable = () => {
           <button
             key={index}
             onClick={() => paginate(index + 1)}
-            className={`px-3 py-1 rounded-md ${
-              currentPage === index + 1
-                ? 'bg-orange-500 text-white'
-                : 'bg-gray-100 text-gray-700'
-            }`}
+            className={`px-3 py-1 rounded-md ${currentPage === index + 1
+              ? 'bg-orange-500 text-white'
+              : 'bg-gray-100 text-gray-700'
+              }`}
           >
             {index + 1}
           </button>
