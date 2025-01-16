@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { ArrowLeftRight, ArrowDown } from 'lucide-react'
 import currencyData from '@/util/data'
 import Image from 'next/image'
+import Link from 'next/link'
 
 function ExchangeBoard() {
     const [sendMethod, setSendMethod] = useState({});
@@ -48,12 +49,12 @@ function ExchangeBoard() {
                 const rRate = parsedSenderData.buyingRate / parsedReceiverData.sellingRate;
                 setRate(parseFloat(rRate.toFixed(2)));
 
-              //  console.log('Sender data:', parsedSenderData.currency);
+                //  console.log('Sender data:', parsedSenderData.currency);
 
                 // Calculate the user's amount when we buy before sending
                 const ourBuyingRate_BDT = parsedSenderData.buyingRate;
                 const userGetFromOurBuying = sendAmount * ourBuyingRate_BDT;
-              //  console.log('User gets when we buy before sending:', userGetFromOurBuying);
+                //  console.log('User gets when we buy before sending:', userGetFromOurBuying);
 
                 // Calculate how much the user is receiving
                 const requestedCurrencySellingRate = parsedReceiverData.sellingRate;
@@ -61,7 +62,7 @@ function ExchangeBoard() {
                 setReceiveAmount(parseFloat(userReceiveAmount.toFixed(2)));
             }
         } catch (error) {
-           // console.log('Error:', error);
+            // console.log('Error:', error);
         }
     }, [sendMethod, receiveMethod, sendAmount]);
 
@@ -155,13 +156,13 @@ function ExchangeBoard() {
                                 </div>
                             </div>
                         </div>
-
-                        <button
-                            type="submit"
-                            className="w-full mt-6 bg-orange-400 text-white py-3 px-6 rounded-lg hover:bg-orange-500 transition-colors font-medium"
-                        >
-                            Exchange Now
-                        </button>
+                        <Link href={'/pages/exchange-page/exchange-details'} >
+                            <button
+                                type="submit"
+                                className="w-full mt-6 bg-orange-400 text-white py-3 px-6 rounded-lg hover:bg-orange-500 transition-colors font-medium"
+                            >
+                                Exchange Now
+                            </button></Link>
                     </form>
                 </div>
             </div>
