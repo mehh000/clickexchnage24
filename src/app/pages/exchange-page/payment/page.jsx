@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const supabase = createClient(
     'https://xhzvyxzcokorepcwbykl.supabase.co',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoenZ5eHpjb2tvcmVwY3dieWtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcwMjk0MjYsImV4cCI6MjA1MjYwNTQyNn0.iMkotOut1YTtdSpUC1sSYBOVZsQbdPqUHd4ichSL6yo'
 );
 
 export default function Paymnt() {
