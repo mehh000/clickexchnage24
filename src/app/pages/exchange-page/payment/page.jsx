@@ -9,7 +9,7 @@ import { addExchnage } from "@/service/addExchangeData";
 import { useRouter } from "next/navigation";
 
 const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    'https://xhzvyxzcokorepcwbykl.supabase.co',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 );
 
