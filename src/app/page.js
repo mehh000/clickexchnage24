@@ -25,9 +25,8 @@ export default function Home() {
       <Navber  />
 
 
-      <div className="bg-gray-50 min-h-screen relative">
+      <div className="bg-gradient-to-r from-blue-100 via-pink-100 to-yellow-100 min-h-screen relative">
         <Message />
-
         <ExchangeBoard />
         <TableComponents />
         <LatestExchangeTable />

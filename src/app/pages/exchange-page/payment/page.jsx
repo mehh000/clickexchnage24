@@ -7,6 +7,7 @@ import { createClient } from "@supabase/supabase-js";
 import { userContext } from "@/context/userContext";
 import { addExchnage } from "@/service/addExchangeData";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const supabase = createClient(
     'https://xhzvyxzcokorepcwbykl.supabase.co',
@@ -18,7 +19,8 @@ export default function Paymnt() {
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
-    const { exchangeData, setExchnage } = useContext(userContext)
+    const { exchangeData, setExchnage } = useContext(userContext);
+    const [loading, setLoading] = useState(true);
     const [trxID, setTrxID] = useState('');
     const router = useRouter()
     const paymentStatus = 'pendding'
@@ -58,27 +60,34 @@ export default function Paymnt() {
         }
     };
     const handleDataSubmit = async () => {
-
-        const fullImageUrl = `https://xhzvyxzcokorepcwbykl.supabase.co/storage/v1/object/public/${imageUrl}`
-
-        setExchnage((pre) => ({
-            ...pre,
-            trxID: trxID,
-            paymentImage: `https://xhzvyxzcokorepcwbykl.supabase.co/storage/v1/object/public/${imageUrl}`,
-            status: paymentStatus
-        }));
-
-        console.log('from the payment page,', exchangeData);
-        try {
-            await addExchnage(exchangeData);
-            console.log('exchnage data added successfully');
-            router.push('/');
-
-        } catch (error) {
-            console.log('faild to add data to firebase', error);
+        setLoading(false);
+        if (!imageUrl) {
+            alert("Please upload the payment proof before confirming.");
+            return;
         }
-
-    }
+          
+        const fullImageUrl = `https://xhzvyxzcokorepcwbykl.supabase.co/storage/v1/object/public/${imageUrl}`;
+    
+        // Construct the data object directly
+        const updatedExchangeData = {
+            ...exchangeData,
+            trxID: trxID,
+            paymentImage: fullImageUrl,
+            status: paymentStatus,
+        };
+    
+        try {
+            console.log('Submitting data:', updatedExchangeData);
+            await addExchnage(updatedExchangeData); // Submit the updated data directly
+            alert('Exchange data added successfully');
+            router.push('/'); // Redirect on success
+        } catch (error) {
+            console.error('Failed to add exchange data:', error);
+            alert('Failed to submit data. Please try again.');
+            setLoading(true);
+        }
+    };
+    
 
     return (
         <div className="w-full bg-gray-100  pt-5 pb-5 flex items-center justify-center">
@@ -206,7 +215,7 @@ export default function Paymnt() {
                     </Link>
 
                     <button onClick={handleDataSubmit} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                        Confirm
+                     {loading ? 'Confirm' : <Image src={'/loading.gif'} height={30} width={30} alt="loading..." />}   
                     </button>
 
                 </div>
