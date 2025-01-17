@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const supabase = createClient(
     'https://xhzvyxzcokorepcwbykl.supabase.co',
-   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoenZ5eHpjb2tvcmVwY3dieWtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcwMjk0MjYsImV4cCI6MjA1MjYwNTQyNn0.iMkotOut1YTtdSpUC1sSYBOVZsQbdPqUHd4ichSL6yo'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhoenZ5eHpjb2tvcmVwY3dieWtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcwMjk0MjYsImV4cCI6MjA1MjYwNTQyNn0.iMkotOut1YTtdSpUC1sSYBOVZsQbdPqUHd4ichSL6yo'
 );
 
 export default function Paymnt() {
@@ -21,7 +21,7 @@ export default function Paymnt() {
     const { exchangeData, setExchnage } = useContext(userContext)
     const [trxID, setTrxID] = useState('');
     const router = useRouter()
-
+    const paymentStatus = 'pendding'
 
 
     const handleFileChange = (e) => {
@@ -60,20 +60,20 @@ export default function Paymnt() {
     const handleDataSubmit = async () => {
 
         const fullImageUrl = `https://xhzvyxzcokorepcwbykl.supabase.co/storage/v1/object/public/${imageUrl}`
-          const paymentStatus = 'pendding'
+
         setExchnage((pre) => ({
             ...pre,
             trxID: trxID,
-            paymentImage: fullImageUrl,
+            paymentImage: `https://xhzvyxzcokorepcwbykl.supabase.co/storage/v1/object/public/${imageUrl}`,
             status: paymentStatus
         }));
 
-        console.log('from the payment page,',exchangeData);
+        console.log('from the payment page,', exchangeData);
         try {
             await addExchnage(exchangeData);
             console.log('exchnage data added successfully');
             router.push('/');
-            
+
         } catch (error) {
             console.log('faild to add data to firebase', error);
         }
@@ -204,11 +204,11 @@ export default function Paymnt() {
                             Back
                         </button>
                     </Link>
-                  
-                        <button onClick={handleDataSubmit} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                            Confirm
-                        </button>
-                 
+
+                    <button onClick={handleDataSubmit} className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        Confirm
+                    </button>
+
                 </div>
             </div>
         </div>

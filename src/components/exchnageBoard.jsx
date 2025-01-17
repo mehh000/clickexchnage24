@@ -185,7 +185,7 @@ function ExchangeBoard() {
                                     Exchange Now
                                 </button>
                                 </Link> : <button
-                                    type="submit"
+                                 
                               
                                     className="w-full mt-6 bg-red-200 text-white py-3 px-6 rounded-lg  transition-colors font-medium"
                                 >

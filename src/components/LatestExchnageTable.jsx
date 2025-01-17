@@ -103,12 +103,12 @@ const LatestExchangeTable = () => {
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500">
                   <div className="flex flex-col">
-                    <span>Send: bkash</span>
-                    <span>Receive: pm</span>
+                    <span> {exchange.SendMethod}-{exchange.sendAmount} </span> to
+                    <span>{exchange.ReciveMethod}-{exchange.receiveAmount}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full }`}>
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(exchange.status)} }`}>
                   {exchange.status}
                   </span>
                 </td>

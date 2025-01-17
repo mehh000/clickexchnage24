@@ -14,7 +14,7 @@ const Navber = () => {
   const [isBlinking, setIsBlinking] = useState(true);
   const [isUserIconActive, setIsUserIconActive] = useState(false);
   const router = useRouter();
-  const { user } = useContext(userContext);
+  const { user, isOnline } = useContext(userContext);
 
 
   // Toggle Menu
@@ -46,7 +46,7 @@ const Navber = () => {
       console.error("Error logging out:", error.message);
     }
   };
-  
+
 
   return (
     <nav className="w-full bg-orange-400 shadow-md">
@@ -59,10 +59,12 @@ const Navber = () => {
               <span className="text-green-600">Exchange</span>
               <span className="text-red-500">24</span>
             </Link>
-            <div
-              className={`h-4 w-4 rounded-full ${isBlinking ? 'bg-green-500' : 'bg-gray-300'
-                } transition-colors duration-500`}
-            ></div>
+            {
+              isOnline ? <div
+                className={`h-4 w-4 rounded-full ${isBlinking ? 'bg-green-500' : 'bg-gray-300'
+                  } transition-colors duration-500`}></div> : <div className="h-4 w-4 rounded-full bg-gray-500"></div>
+            }
+
           </div>
 
           {/* Menu Icon for Mobile */}

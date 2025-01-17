@@ -1,10 +1,11 @@
 'use client'
 
+import { userContext } from '@/context/userContext'
 import Link from 'next/link'
-import React from 'react'
+import React, { useContext } from 'react'
 
 function PhoneMenu({ isToggle, setIsToggle }) {
-
+    const { isOnline,handleWebsiteOn} = useContext(userContext)
 
     const handleToggle = () => {
         setIsToggle(!isToggle);
@@ -38,6 +39,16 @@ function PhoneMenu({ isToggle, setIsToggle }) {
                     </buttonon>
 
                     <div className="flex mt-5 flex-col space-y-4">
+                        
+                {/* Online/Offline Toggle */}
+                <button
+                    onClick={handleWebsiteOn}
+                    className={`p-3 rounded-lg font-semibold text-white transition-colors duration-300 ${isOnline ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
+                        }`}
+                >
+                    {isOnline ? 'ON' : 'OFF'}
+                </button>
+
                         {
                             sideMenu.map((data, i) => (
                                 <div key={i} className="">
