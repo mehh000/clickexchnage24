@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { EditIcon, TrashIcon, PlusCircleIcon } from 'lucide-react';
 
-import {  getAllCurrencyData, updateCurrencyData } from '@/service/getCurrency';
+import { getAllCurrencyData, updateCurrencyData } from '@/service/getCurrency';
 
 const CurrencyPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,18 +33,18 @@ const CurrencyPage = () => {
     }, []);
 
     const handleOpenModal = (currency = null) => {
-     
+
         setFormData(currency || { name: '', image: '', buyingRate: '', sellingRate: '', reserve: '' });
         setCurrentCurrency(currency);
         setIsModalOpen(true);
-     
+
         console.log('the id:', updateId);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setCurrentCurrency(null);
-       
+
     };
     // This function handles changes in the form inputs. It takes the event object 'e' as an argument.
     // It destructures 'name' and 'value' from 'e.target', which represents the input element that triggered the change.
@@ -57,10 +57,10 @@ const CurrencyPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-     
+
         console.log('Updated Data:', formData); // Log the updated data
         try {
-            await updateCurrencyData(updateId,formData);
+            await updateCurrencyData(updateId, formData);
             console.log('Currency updated successfully');
         } catch (error) {
             console.log('Failed to add because:', error);
@@ -103,8 +103,10 @@ const CurrencyPage = () => {
                                 <td className="px-6 py-4 text-gray-700">{currency.reserve}</td>
                                 <td className="px-6 py-4 text-gray-700 flex items-center gap-4">
                                     <EditIcon
-                                        onClick={() => {handleOpenModal(currency)
-                                            setUpdateId(currency.id)}
+                                        onClick={() => {
+                                            handleOpenModal(currency)
+                                            setUpdateId(currency.id)
+                                        }
                                         }
                                         className="w-5 h-5 text-blue-600 cursor-pointer hover:text-blue-800"
                                     />
@@ -124,7 +126,7 @@ const CurrencyPage = () => {
                         <h2 className="text-xl font-bold mb-4">
                             {currentCurrency ? 'Edit Currency' : 'Add Currency'}
                             <p className="">
-                                {updateId ? updateId :''}
+                                {updateId ? updateId : ''}
                             </p>
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
@@ -138,6 +140,7 @@ const CurrencyPage = () => {
                                 readOnly
                                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                             />
+                            <label htmlFor="">Name</label>
                             <input
                                 type="text"
                                 name="name"
@@ -147,6 +150,7 @@ const CurrencyPage = () => {
                                 required
                                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                             />
+                            <label htmlFor="">Image</label>
                             <input
                                 type="text"
                                 name="image"
@@ -156,6 +160,7 @@ const CurrencyPage = () => {
                                 required
                                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                             />
+                            <label htmlFor="">Buying rate</label>
                             <input
                                 type="text"
                                 name="buyingrate"
@@ -165,6 +170,7 @@ const CurrencyPage = () => {
                                 required
                                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                             />
+                            <label htmlFor="">Selling rate</label>
                             <input
                                 type="text"
                                 name="sellingrate"
@@ -174,6 +180,7 @@ const CurrencyPage = () => {
                                 required
                                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
                             />
+                            <label htmlFor="">In stock amount</label>
                             <input
                                 type="text"
                                 name="reserve"
