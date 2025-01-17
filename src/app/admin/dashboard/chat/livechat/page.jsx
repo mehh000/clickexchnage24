@@ -1,49 +1,35 @@
 'use client'
 
-import { userContext } from '@/context/userContext';
-import { sendMessage } from '@/service/livechat';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+
 
 function ChatPage() {
-
+  const [messages, setMessages] = useState([
+    { id: 1, text: "Hello! How can I assist you today?", sender: 'receiver' },
+    { id: 2, text: "I'm looking for information on your services.", sender: 'sender' },
+  ]);
   const [input, setInput] = useState('');
-  const { user } = useContext(userContext);
 
-
-
-
-  const handleSendMessage = async (e) => {
+  const handleSendMessage = (e) => {
     e.preventDefault();
-    try {
-
-      const aUserId = 'fHcK8r1oTSRd9UH370LjcqY6d3j1t';
-      const bUserId = 'ABy5QRkgTtca7MBIzquoyNvNTJt1';
-
-      const admidID = 'fHcK8r1oTSRd9UH370LjcqY6d3j1'
-
-      const text = 'hllow im a message'
-
-      await sendMessage(user.id, admidID, input)
-      setInput('')
-      console.log('message sendeds')
-
-    } catch (error) {
-      console.log(error)
+    if (input.trim()) {
+      setMessages([...messages, { id: messages.length + 1, text: input, sender: 'sender' }]);
+      setInput('');
     }
-  }
+  };
 
   return (
-    <div className="w-full h-full bg-gray-50 py-5 px-0 sm:px-6 lg:px-8">
+    <div className="w-full h-full bg-gray-50 py-2 px-0 sm:px-6 lg:px-8">
       <div className="w-full h-full max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-8">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Chat Support</h1>
         <div className="h-96 overflow-y-auto mb-4 border border-gray-300 rounded-md p-4">
-          {/* {messages.map((message) => (
+          {messages.map((message) => (
             <div key={message.id} className={`mb-2 ${message.sender === 'sender' ? 'text-right' : 'text-left'}`}>
               <p className={`inline-block px-4 py-2 rounded-md ${message.sender === 'sender' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700'}`}>
                 {message.text}
               </p>
             </div>
-          ))} */}
+          ))}
         </div>
         <form onSubmit={handleSendMessage} className="flex">
           <input
@@ -55,13 +41,11 @@ function ChatPage() {
           />
           <button
             type="submit"
-            onClick={handleSendMessage}
             className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
           >
             Send
           </button>
         </form>
-        
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ export default function FInalCheak() {
     const { exchangeData } = useContext(userContext)
     console.log('from the final cheak page', exchangeData)
     return (
-        <div className="w-full bg-gray-100  pt-5 pb-5 flex items-center justify-center">
+        <div className="w-full bg-gradient-to-r from-blue-100 via-pink-100 to-yellow-100  pt-5 pb-5 flex items-center justify-center">
             <div className="p-6 rounded-lg shadow-lg max-w-3xl w-full bg-white flex flex-col gap-6">
                 {/* Step Indicator */}
                 <div className="flex items-center justify-center gap-4">

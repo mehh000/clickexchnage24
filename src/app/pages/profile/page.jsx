@@ -1,14 +1,15 @@
 'use client'
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { User, DollarSign, Users, ArrowRight, Clipboard } from 'lucide-react';
+import { userContext } from '@/context/userContext';
 
 const Profile = () => {
     const referralId = "REF123456"; // Example referral ID
-
+    const {user} = useContext(userContext)
     const copyToClipboard = () => {
         navigator.clipboard.writeText(referralId);
-        
+
     };
 
     return (
@@ -17,11 +18,17 @@ const Profile = () => {
                 <div className="bg-gray-200 rounded-full p-6">
                     <User size={100} className="text-gray-600" />
                 </div>
-                <h1 className="text-2xl font-bold mt-4">John Doe</h1>
-                <p className="text-gray-600">john.doe@example.com</p>
-                <p className="text-gray-600">+1 (555) 123-4567</p> {/* Phone number */}
+                <h1 className="text-2xl font-bold mt-4">
+                    {user != null ? user.fullName : 'loading..'}
+                </h1>
+                <p className="text-gray-600">
+                    {user != null ? user.email : 'loading..'}
+                </p>
+                <p className="text-gray-600">
+                    {user != null ? user.phoneNumber : 'loading..'}
+                    </p> {/* Phone number */}
                 <div className="flex items-center mt-2">
-                    <span className="text-gray-600">Referral ID: {referralId}</span>
+                    <span className="text-gray-600">Referral ID: {user != null ? user.refferId : 'loadings'}</span>
                     <Clipboard size={20} className="text-gray-600 cursor-pointer ml-2" onClick={copyToClipboard} />
                 </div>
             </div>

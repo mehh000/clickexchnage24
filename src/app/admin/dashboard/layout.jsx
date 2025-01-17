@@ -36,7 +36,7 @@ function AdminLayout({ children }) {
 
             </div>
             <PhoneMenu isToggle={isToggle} setIsToggle={setIsToggle} />
-            <div className="flex-1 md:ml-64 ml-0 mt-16 pt-4  overflow-y-auto">
+            <div className="flex-1 bg-white md:ml-64 ml-0 mt-16 pt-4  overflow-y-auto">
                 {children}
             </div>
         </div>

@@ -112,16 +112,20 @@ const Navber = () => {
 
             {isUserIconActive && (
               <div className="absolute right-0 mt-4 w-48 bg-white shadow-lg rounded-md z-10">
+                <p className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                  {user != null ? user.fullName : 'name'}
+                </p>
                 <Link href="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   Profile
                 </Link>
+
                 <Link href="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   Settings
                 </Link>
                 <Link href="/my-exchange" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   My Exchange
                 </Link>
-                <button onClick={handleLogout} className="block px-4 py-2 text-red-600 hover:bg-red-100">
+                <button onClick={handleLogout} className="block w-full px-4 py-2 text-red-600 hover:bg-red-100">
                   Logout
                 </button>
               </div>
@@ -162,6 +166,9 @@ const Navber = () => {
 
               {
                 user != null && (<div className="flex flex-col space-y-4">
+                  <p className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                    {user != null ? user.fullName : 'name'}
+                  </p>
                   <Link href="/pages/advice" className="text-white hover:text-gray-200">
 
                     Profile
