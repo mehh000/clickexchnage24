@@ -1,49 +1,100 @@
 'use client'
 
 import { userContext } from '@/context/userContext';
+import { addChatWithMessage, getChatsWithMessages } from '@/service/globalChat';
+
 import { sendMessage } from '@/service/livechat';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+
 
 function ChatPage() {
 
   const [input, setInput] = useState('');
   const { user } = useContext(userContext);
+  const [messages, setMessages] = useState();
 
-
+  const fetchChatDocument = async () => {
+    try {
+      if (user?.id) {
+        const chatDoc = await getChatsWithMessages(user.id);
+        console.log("Fetched chats:", chatDoc);
+        setMessages(chatDoc);
+      } else {
+        console.log("User ID is not available.");
+      }
+    } catch (error) {
+      console.error("Error fetching chat document:", error);
+    }
+  };
 
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
     try {
+      const adminID = 'fHcK8r1oTSRd9UH370LjcqY6d3j1';
 
-      const aUserId = 'fHcK8r1oTSRd9UH370LjcqY6d3j1t';
-      const bUserId = 'ABy5QRkgTtca7MBIzquoyNvNTJt1';
+      const message = input;
+      const time = new Date().getTime();
 
-      const admidID = 'fHcK8r1oTSRd9UH370LjcqY6d3j1'
 
-      const text = 'hllow im a message'
 
-      await sendMessage(user.id, admidID, input)
-      setInput('')
-      console.log('message sendeds')
 
+      await addChatWithMessage(user.id, adminID, user.id, message, time)
+      fetchChatDocument();
+      setInput('');
+      console.log('Message sent successfully');
     } catch (error) {
-      console.log(error)
+      console.error('Failed to send message:', error);
     }
-  }
+  };
+
+  useEffect(() => {
+
+
+    fetchChatDocument();
+  }, [user?.id]); // Add user.id as a dependency
+
+
+
 
   return (
     <div className="w-full h-full bg-gray-50 py-5 px-0 sm:px-6 lg:px-8">
       <div className="w-full h-full max-w-4xl mx-auto bg-white shadow-xl rounded-lg p-8">
         <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Chat Support</h1>
         <div className="h-96 overflow-y-auto mb-4 border border-gray-300 rounded-md p-4">
-          {/* {messages.map((message) => (
-            <div key={message.id} className={`mb-2 ${message.sender === 'sender' ? 'text-right' : 'text-left'}`}>
-              <p className={`inline-block px-4 py-2 rounded-md ${message.sender === 'sender' ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-700'}`}>
-                {message.text}
-              </p>
-            </div>
-          ))} */}
+          {/* Render chat messages */}
+          {
+            messages && Array.isArray(messages) && messages.length > 0 ? (
+              messages.map((chat, chatIndex) => (
+                <div key={chat.id || chatIndex} className="mb-4">
+
+                  {Array.isArray(chat.messages) && chat.messages.length > 0 ? (
+                    chat.messages.map((msg, msgIndex) => (
+                      <div key={msg.id || msgIndex} className={`mb-2  ${msg.senderId != user?.id ? 'text-left' : 'text-right'}`}>
+                        <p
+                          className={`inline-block px-4 py-2 rounded-md ${msg.senderId != user?.id ? 'bg-blue-600 text-white' : 'bg-gray-300 text-black'
+                            }`}
+                        >
+                          {msg.text}
+                        </p>
+                        <span className="block text-xs text-gray-500 mt-1">
+                          {new Date(msg.time).toLocaleString()}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No messages available.</p>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">Loading...</p>
+            )
+          }
+
+
+
+
         </div>
         <form onSubmit={handleSendMessage} className="flex">
           <input
@@ -61,7 +112,7 @@ function ChatPage() {
             Send
           </button>
         </form>
-        
+
       </div>
     </div>
   );

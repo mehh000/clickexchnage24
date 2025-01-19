@@ -12,7 +12,7 @@ const LatestExchangeTable = () => {
   useEffect(() => {
     const getExchnages = async () => {
       const data = await getExchnageAll();
-      console.log('getting all exchess:', data);
+     // console.log('getting all exchess:', data);
       setData(data);
     };
     getExchnages()
