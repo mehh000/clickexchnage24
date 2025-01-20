@@ -20,6 +20,7 @@ export const UserProvider = ({ children }) => {
     const [exchangeData, setExchnage] = useState({});
     const [isOnline, setIsOnline] = useState();
     const [statusId, setStatusID] = useState();
+    const [messageLoading, setMessageLoading] = useState(true);
 
 
     // get the user with uid
@@ -77,6 +78,12 @@ export const UserProvider = ({ children }) => {
         }
     };
 
+    // toggle the message loading state to update the fetch message state
+
+    const toggleMesageFeach = () => {
+        setMessageLoading(!messageLoading);
+    }
+
 
 
 
@@ -88,7 +95,10 @@ export const UserProvider = ({ children }) => {
             exchangeData,
             handleWebsiteOn,
             isOnline,
-            setExchnage
+            setExchnage,
+            toggleMesageFeach,
+            messageLoading,
+            setMessageLoading
         }}>
             {children}
         </userContext.Provider>
