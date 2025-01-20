@@ -136,7 +136,7 @@ function ChatPage() {
                       {msg.text}
                     </p>
                     <span className="block text-xs text-gray-500 mt-1">
-                      {new Date(msg.time).toLocaleString()}
+                      {new Date(msg.timestamp).toLocaleString()}
                     </span>
                   </div>
                 ))}

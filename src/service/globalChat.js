@@ -1,8 +1,8 @@
 'use server'
 
 
-import { setDoc, collection, addDoc } from "firebase/firestore";
-import { query, where, getDocs, getDoc, doc } from "firebase/firestore";
+import { setDoc, collection, addDoc, query, where, getDocs, getDoc, doc, serverTimestamp } from "firebase/firestore";
+
 import { db } from "@/DB/firebase_config";
 
 
@@ -15,28 +15,27 @@ export const addChatWithMessage = async (userId, adminId, senderId, text, time) 
     await setDoc(
       chatDocRef,
       {
-
         users: [userId, adminId], // Add the users array
       },
       { merge: true } // Merge to prevent overwriting existing data
     );
 
-    // Reference the messages subcollection
-    const messagesCollectionRef = collection(chatDocRef, "messages");
+    // Reference the specific message in the messages subcollection with a custom ID
+    const messageDocRef = doc(chatDocRef, "messages", time.toString());
 
-    // Add a message to the subcollection
-    await addDoc(messagesCollectionRef, {
+    // Add a message to the subcollection with the custom ID
+    await setDoc(messageDocRef, {
       senderId,
       text,
-      time,
+      timestamp: time,
     });
 
-    console.log("Chat and message added successfully.");
+    console.log("Chat and message added successfully with custom ID:", time);
   } catch (error) {
-    console.error("Error adding chat and message:", error);
+    console.error("Error adding chat and message:", error.message);
+    throw error; // Rethrow error to handle it where this function is called
   }
 };
-
 
 export const getChatsWithMessages = async (userId) => {
   try {
@@ -81,23 +80,24 @@ export const getChatsWithMessages = async (userId) => {
 
 export const adminChatAdd = async (id, senderId, text, time) => {
   try {
-    // Reference the specific subcollection by its ID directly
-    const messagesCollectionRef = collection(db, "chats", id, "messages");
+    // Reference the specific document in the subcollection with a custom ID
+    const messageDocRef = doc(db, "chats", id, "messages", time.toString());
 
     // Create the new message object
     const newMessage = {
       senderId,
       text,
-      time,
+      timestamp: time,
     };
 
-    // Add the new message to the messages subcollection
-    const docRef = await addDoc(messagesCollectionRef, newMessage);
-    console.log("Message added with ID:", docRef.id);
+    // Set the document with the custom ID
+    await setDoc(messageDocRef, newMessage);
 
-    return docRef.id; // Return the new message ID if needed
+    console.log("Message added with custom ID:", time);
+    return time; // Return the custom ID if needed
   } catch (error) {
     console.error("Error adding message:", error.message);
     throw error; // Rethrow error to handle it where this function is called
   }
 };
+

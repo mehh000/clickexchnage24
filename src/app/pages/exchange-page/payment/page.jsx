@@ -8,6 +8,7 @@ import { userContext } from "@/context/userContext";
 import { addExchnage } from "@/service/addExchangeData";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { serverTimestamp } from "firebase/firestore";
 
 const supabase = createClient(
     'https://xhzvyxzcokorepcwbykl.supabase.co',
@@ -69,11 +70,13 @@ export default function Paymnt() {
         const fullImageUrl = `https://xhzvyxzcokorepcwbykl.supabase.co/storage/v1/object/public/${imageUrl}`;
     
         // Construct the data object directly
+        const time =  new Date().getTime();
         const updatedExchangeData = {
             ...exchangeData,
             trxID: trxID,
             paymentImage: fullImageUrl,
             status: paymentStatus,
+            time
         };
     
         try {

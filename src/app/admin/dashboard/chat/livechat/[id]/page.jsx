@@ -3,7 +3,7 @@
 import { userContext } from '@/context/userContext';
 import { adminChatAdd, getChatsWithMessages } from '@/service/globalChat';
 import React, { useContext, useEffect, useState } from 'react';
-import { collection, doc, onSnapshot, } from 'firebase/firestore';
+import { query, orderBy, onSnapshot, collection, doc } from "firebase/firestore";
 
 import { db } from '@/DB/firebase_config';
 
@@ -26,23 +26,25 @@ function ChatPage({ params }) {
 
   useEffect(() => {
     if (!id) return;
-
+  
     const chatDocRef = doc(db, "chats", id);
     const messagesCollectionRef = collection(chatDocRef, "messages");
-
+  
+    // Create a query to order messages by timestamp in ascending order
+    const messagesQuery = query(messagesCollectionRef, orderBy("timestamp", "asc"));
+  
     // Real-time listener for Firestore messages
-    const unsubscribe = onSnapshot(messagesCollectionRef, (snapshot) => {
+    const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
       const updatedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setMessages(updatedMessages);
     });
-
+  
     // Cleanup listener on component unmount
     return () => unsubscribe();
   }, [id]);
-
 
 
 
@@ -86,7 +88,8 @@ function ChatPage({ params }) {
                     {msg.text}
                   </p>
                   <span className="block text-xs text-gray-500 mt-1">
-                    {new Date(msg.time).toLocaleString()}
+               {new Date(msg.timestamp).toLocaleString()}
+            
                   </span>
                 </div>
               ))

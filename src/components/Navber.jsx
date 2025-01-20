@@ -115,15 +115,18 @@ const Navber = () => {
                 <p className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   {user != null ? user.fullName : 'name'}
                 </p>
-                <Link href="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                <Link href="/pages/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   Profile
                 </Link>
 
-                <Link href="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                <Link href="/pages/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   Settings
                 </Link>
-                <Link href="/my-exchange" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                <Link href="/pages/my-exchange" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                   My Exchange
+                </Link>
+                <Link href="/pages/feedback" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                  My FeedBacks
                 </Link>
                 <button onClick={handleLogout} className="block w-full px-4 py-2 text-red-600 hover:bg-red-100">
                   Logout
@@ -180,6 +183,9 @@ const Navber = () => {
                   <Link href="/pages/advice" className="text-white hover:text-gray-200">
 
                     My Exchange
+                  </Link>
+                  <Link href="/pages/feedback" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                    My FeedBacks
                   </Link>
                   <button onClick={handleLogout} className="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 w-full flex justify-center">
                     Logout

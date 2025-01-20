@@ -96,7 +96,7 @@ const LatestExchangeTable = () => {
                   {exchange.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                2024-01-20 14:20
+               {new Date(exchange.time).toLocaleString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {exchange.exchangeId}
